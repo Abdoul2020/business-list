@@ -1,3 +1,12 @@
+'use client';
+
+
+
+
 export default async function Page() {
-  return null;
+  return (
+    <>
+      <h1>login Pages</h1>
+    </>
+  )
 }

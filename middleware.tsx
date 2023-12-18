@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
             request: {
               headers: request.headers,
             },
-            
+
           });
           response.cookies.set({
             name,
