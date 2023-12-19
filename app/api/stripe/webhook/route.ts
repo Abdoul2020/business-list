@@ -15,8 +15,10 @@ export async function POST(req: Request) {
     const stripe = createStripeClient();
     const reqText = await req.text();
 
-    const stripeSignature = z.string().parse(req.headers.get("Stripe-Signature"));
-    const event = await stripe.webhooks.constructEventAsync(reqText, stripeSignature, env.STRIPE_WEBHOOK_SIGNING_SECRET);
+    // const stripeSignature = z.string().parse(req.headers.get("Stripe-Signature"));
+    // const event = await stripe.webhooks.constructEventAsync(reqText, stripeSignature, env.STRIPE_WEBHOOK_SIGNING_SECRET);
+
+    const event = JSON.parse(reqText);
 
     console.info("Stripe webhook event:", event.type);
     console.info(event.data.object);
