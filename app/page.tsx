@@ -12,6 +12,8 @@ export default async function Page() {
 
 
 
+
+
   const businesses: Database[] = [
     { id: 1, user_id: "2", user_email: "abd@gmail.com", name: 'Business 1', created_at: new Date("12-12-2023") },
     { id: 2, user_id: "3", user_email: "xyz@gmail.com", name: 'Business 2', created_at: new Date("12-12-2023") },

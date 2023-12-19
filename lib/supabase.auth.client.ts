@@ -49,3 +49,9 @@ export async function signupUsingPassword(props: { full_name: string; email: str
     },
   });
 }
+
+
+//logout function 
+export async function logout() {
+  return await supabaseForClientComponent.auth.signOut();
+}
