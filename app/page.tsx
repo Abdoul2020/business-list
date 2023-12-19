@@ -1,33 +1,6 @@
 import ListPanel from "./components/ListPanels";
 import Header from "@/app/components/layout/Header";
-import { createSupabaseForServerComponent } from "@/lib/supabase.server";
-
-
-
-// const businessData: Database = {
-//   businessList: [],
-// };
-
-export async function getData() {
-  try {
-    const supabase = createSupabaseForServerComponent();
-
-    const { data: businesses, error } = await supabase
-      .from('businesses')
-      .select('*')
-      .order('name', { ascending: true });
-
-    if (error) {
-      console.error("Error fetching businesses:", error.message);
-      return { businesses: [], error: error.message };
-    }
-
-    return { businesses: businesses || [], error: null };
-  } catch (error: any) {
-    console.error("Error in loader:", error);
-    return { businesses: [], error: error.message || "An error occurred" };
-  }
-}
+import { getallBusiness } from "@/lib/getallbusiness";
 
 
 
@@ -35,7 +8,7 @@ export async function getData() {
 export default async function Page() {
 
 
-  const data = await getData();
+  const data = await getallBusiness();
 
 
 
