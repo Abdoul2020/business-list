@@ -1,6 +1,6 @@
-import { Database } from "@/lib/database.types";
 import ListPanel from "./components/ListPanels";
 import Header from "@/app/components/layout/Header";
+import { createSupabaseForServerComponent } from "@/lib/supabase.server";
 
 
 
@@ -8,19 +8,49 @@ import Header from "@/app/components/layout/Header";
 //   businessList: [],
 // };
 
+export async function getData() {
+  try {
+    const supabase = createSupabaseForServerComponent();
+
+    const { data: businesses, error } = await supabase
+      .from('businesses')
+      .select('*')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error("Error fetching businesses:", error.message);
+      return { businesses: [], error: error.message };
+    }
+
+    return { businesses: businesses || [], error: null };
+  } catch (error: any) {
+    console.error("Error in loader:", error);
+    return { businesses: [], error: error.message || "An error occurred" };
+  }
+}
+
+
+
+
 export default async function Page() {
 
 
+  const data = await getData();
 
 
 
-  const businesses: Database[] = [
-    { id: 1, user_id: "2", user_email: "abd@gmail.com", name: 'Business 1', created_at: new Date("12-12-2023") },
-    { id: 2, user_id: "3", user_email: "xyz@gmail.com", name: 'Business 2', created_at: new Date("12-12-2023") },
-    { id: 3, user_id: "4", user_email: "abc@gmail.com", name: 'Business 3', created_at: new Date("12-12-2023") },
-    { id: 4, user_id: "5", user_email: "def@gmail.com", name: 'Business 4', created_at: new Date("12-12-2023") },
-   
-  ];
+
+  if (data?.error) {
+
+
+    return (
+      <>
+        <div>Error: {data?.error}</div>
+      </>
+    );
+  }
+
+
 
   const isLoggedIn = false;
 
@@ -29,19 +59,17 @@ export default async function Page() {
 
     <div className="min-h-screen bg-gray-900 text-gray-300">
 
-      
-      <Header isLoggedIn={isLoggedIn} />
+
+      <Header />
       <div className="container mx-auto p-6 sm:p-12">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6">
-          Businesses List
-        </h1>
+
         <p className="text-lg md:text-xl text-white mb-6">
-          Your personal space to curate and manage a wishlist of your favorite watches.
-          Sign in to create, view, edit, and delete items from your watchlist.
+          Your personal space to curate and manage a wishlist of your favorite businesses.
+          Sign in to create, edit, and delete items from your businesses.
         </p>
 
         <div >
-          <ListPanel businessList={businesses} />
+          <ListPanel businessList={data?.businesses} />
         </div>
 
       </div>

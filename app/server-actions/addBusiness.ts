@@ -2,9 +2,7 @@
 
 import { createSupabaseForServerAction } from "@/lib/supabase.server";
 
-interface addprops {
-  name: string;
-}
+
 
 // fetch the cookie data
 
@@ -32,16 +30,13 @@ export async function getData() {
 
 // add business function
 
-export async function addBusiness(formData: any) {
-  console.log("nameMe", formData);
+export async function addBusiness(formData: FormData) {
 
-  const name: string = formData.get("businessName");
+  const name = formData.get("businessName");
 
-  console.log("businessName", name);
 
   const userAuthData = await getData();
 
-  console.log("userAuth::", userAuthData);
 
   const supabase = createSupabaseForServerAction();
 
@@ -55,11 +50,14 @@ export async function addBusiness(formData: any) {
     ]);
 
     if (error) {
-      console.error("Error inserting data", error);
-      return;
+
+      return { status: false, error: error.message };
     }
 
-
+    
+    
     return { status: true, message: "Success" };
   }
+
+
 }

@@ -2,6 +2,8 @@
 import React, { FormEvent } from 'react';
 import { addBusiness } from "../server-actions/addBusiness";
 import { useRouter } from "next/navigation";
+import { toast } from 'react-toastify';
+
 
 
 export default function BusinessForm() {
@@ -18,6 +20,9 @@ export default function BusinessForm() {
         //redirect when on success
         if (result && result.status) {
             router.push('/');
+            toast.success("Successfully added Business !");
+        } else {
+            toast.error(`Error: ${result && result.error}`);
         }
     };
 

@@ -64,7 +64,14 @@ export async function middleware(request: NextRequest) {
     }
   );
 
- await supabase.auth.getSession();
+  //await supabase.auth.getSession();
+  //connect the session
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session?.user && request.nextUrl.pathname.startsWith('/business-list')) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
 
   return response;
 }

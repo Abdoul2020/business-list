@@ -1,15 +1,13 @@
-// app/(app)/(public)/business-list/page.tsx
 
-import { Database } from "@/lib/database.types";
 import { createSupabaseForServerComponent } from "@/lib/supabase.server";
 import BusinessForm from "@/app/components/BusinessForm";
+import EditBusiness from "../components/EditBusiness";
+import MainPageButton from "../components/mainpage/MainPageButton";
 
 
 
-interface LoaderData {
-    businesses: Database[];
-    error: string | null;
-}
+
+
 
 
 
@@ -38,29 +36,41 @@ export async function getData() {
             return { businesses: [], error: error.message };
         }
 
-        console.log("Fetched businesses:", businesses);
         return { businesses: businesses || [], error: null };
     } catch (error: any) {
         console.error("Error in loader:", error);
         return { businesses: [], error: error.message || "An error occurred" };
     }
 
-    // Default return statement
-    return { businesses: businesses || [], error: null };
+    // Default return 
+    // return { businesses: businesses || [], error: null };
 
 }
 
 
+
+
+
+
 export default async function BusinessList() {
+
+
+
 
     const data = await getData();
 
-    
-
-
     if (data?.error) {
-        return <div>Error: {data?.error}</div>;
+        return (
+            <>
+                <div>Error: {data?.error}</div>
+            </>
+        );
     }
+
+
+
+
+
 
 
     return (
@@ -68,31 +78,36 @@ export default async function BusinessList() {
             <div className="container mx-auto p-6 sm:p-12">
                 <div className="flex justify-between items-start">
                     <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6">My Business List</h1>
-                    <form action="/auth/signout" method="post">
-                        <button type="submit" className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                            Sign out
-                        </button>
-                    </form>
+
+                    <MainPageButton />
+
                 </div>
                 <BusinessForm />
                 <div className="mt-6">
-                    {data?.businesses.map((business) => (
-                        <div key={business.id} className="mb-4 p-4 bg-gray-800 rounded-lg shadow">
-                            <h2 className="text-xl text-white mb-2">{business.name} - {business.user_email}</h2>
-                            <div className="flex space-x-2">
-                                <form action={"deleteWatch"}>
-                                    <input type="hidden" name="id" value="{watch.id}" />
-                                    <button
-                                        type="submit"
-                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                    >
-                                        Delete
-                                    </button>
-                                </form>
-                                {/* <EditWatch watch={watch} /> */}
+                    {data?.businesses.map((business) => {
+
+                        //date format for created_at
+                        function formatDate(datetimeString: string): string {
+                            const date = new Date(datetimeString);
+                            return date.toISOString().split('T')[0];
+                        }
+                        const dateString: string = formatDate(business.created_at);
+
+
+                        return (
+                            <div key={business.id} className="mb-4 p-4 bg-gray-800 rounded-lg shadow">
+                                <h2 className="text-xl text-white grid  mb-1">
+                                    <span>{business.name} </span>
+                                    <span className="mb-1">Owner: {business.user_email} </span>
+                                    <span className="mb-1">Created_at: {dateString}</span>
+                                </h2>
+
+                                <div className="flex space-x-2">
+                                    <EditBusiness business={business} />
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             </div>
         </div>
