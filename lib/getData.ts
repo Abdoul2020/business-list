@@ -2,7 +2,7 @@
 import { createSupabaseForServerComponent } from "@/lib/supabase.server";
 
 
-export async function getData() {
+export async function getdata() {
 
     try {
         const supabase = createSupabaseForServerComponent();

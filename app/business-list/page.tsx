@@ -2,7 +2,7 @@
 import BusinessForm from "@/app/components/BusinessForm";
 import EditBusiness from "../components/EditBusiness";
 import MainPageButton from "../components/mainpage/MainPageButton";
-import { getData } from "@/lib/getData";
+import { getdata } from "@/lib/getdata";
 
 
 
@@ -22,7 +22,7 @@ export default async function BusinessList() {
 
 
 
-    const data = await getData();
+    const data = await getdata();
 
 
 

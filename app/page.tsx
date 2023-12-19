@@ -1,6 +1,6 @@
 import ListPanel from "./components/ListPanels";
 import Header from "@/app/components/layout/Header";
-import { getallBusiness } from "@/lib/getallbusiness";
+import { getallbusiness } from "@/lib/getallbusiness";
 
 
 
@@ -8,7 +8,7 @@ import { getallBusiness } from "@/lib/getallbusiness";
 export default async function Page() {
 
 
-  const data = await getallBusiness();
+  const data = await getallbusiness();
 
 
 

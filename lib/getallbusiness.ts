@@ -3,7 +3,7 @@ import { createSupabaseForServerComponent } from "@/lib/supabase.server";
 
 
 
-export async function getallBusiness() {
+export async function getallbusiness() {
 
     
     try {
